@@ -71,12 +71,14 @@ public class IssueReturnView {
             /*
             Check for empty fields
             Check regex
-            Add logic to check if book is in borrowed_book database
-            Check date, if date exceeds book rental period then ->
-            
+            Add logic to see if customer exists
+            Add logic to see if book exists
+            Add logic to check if book is in borrowed_book database and this customer borrowed this book
+            Check date, if date exceeds book rental period then -> ?
+            If all true, remove borrowed book from borrowed_book database
 
              */
-            System.out.println("Delete Book");
+            System.out.println("Return Book");
 
 
         });

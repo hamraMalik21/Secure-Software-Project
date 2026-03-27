@@ -30,6 +30,9 @@ public class ManageBooksView {
         Button updateBookBtn = new Button("Update Book");
         updateBookBtn.setPrefWidth(200);
 
+        Button showBookBtn = new Button("Show All Books");
+        showBookBtn.setPrefWidth(200);
+
         Button logoutBtn = new Button("Logout");
         logoutBtn.setPrefWidth(95);
 
@@ -42,6 +45,7 @@ public class ManageBooksView {
         // Actions *****
         addBookBtn.setOnAction(e -> {
             System.out.println("Add Book");
+            
         });
 
         deleteBookBtn.setOnAction(e -> {
@@ -53,6 +57,12 @@ public class ManageBooksView {
         updateBookBtn.setOnAction(e -> {
             System.out.println("Update Book");
         });
+
+        showBookBtn.setOnAction(e -> {
+            ShowAllBooks showAllBooks = new ShowAllBooks(stage, currentUser);
+            showAllBooks.initializeComponents();
+        });
+
 
         // Logout --> return to UserLogin
         logoutBtn.setOnAction(e -> {
@@ -67,7 +77,7 @@ public class ManageBooksView {
         // Layout
         VBox StaffLayout = new VBox(15);
         StaffLayout.setPadding(new Insets(10));
-        StaffLayout.getChildren().addAll(title,addBookBtn,deleteBookBtn,updateBookBtn, buttonLayout);
+        StaffLayout.getChildren().addAll(title,addBookBtn,deleteBookBtn,updateBookBtn,showBookBtn, buttonLayout);
 
 
         // Scene then stage
