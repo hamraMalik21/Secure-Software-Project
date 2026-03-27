@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class UserLogin {
     private Scene loginScene;
@@ -44,10 +45,16 @@ public class UserLogin {
         if(loggedInUser != null){
             // Authorization, grant the logged-in user access based on the role
             if(AuthorizationService.isStaff(loggedInUser)){
-                System.out.println("You are staff");
+                StaffView staffView = new StaffView(stage, loggedInUser);
+                //System.out.println(BCrypt.hashpw("customer", BCrypt.gensalt(12)));
+                staffView.initializeComponents();
+
             } else if (AuthorizationService.isUser(loggedInUser)) {
-                System.out.println("You are user");
+
+                CustomerView customerView = new CustomerView(stage, loggedInUser);
+                customerView.initializeComponents();
             }else{
+
                 showAlert("Authentication Failed", "Invalid username or password.");
             }
         }else{
