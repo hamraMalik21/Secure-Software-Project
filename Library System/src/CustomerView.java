@@ -1,5 +1,6 @@
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -7,6 +8,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class CustomerView {
     private User currentUser;
@@ -54,15 +59,73 @@ public class CustomerView {
         });
 
         checkBtn.setOnAction(e -> {
-            /*
-            Check empty field
-            Check regex
-            Check if book exists in book database -> Alert book doesn't exist
-            Check if book exists in borrowed_book database -> Alert book already borrowed
-            Check if book exist in book database and does not exist in borrowed_book database -> book available
-             */
-            System.out.println("Check Book Availibility");
 
+            String bookName = searchField.getText().trim();
+
+            if (bookName.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Input Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Please enter a book name.");
+                alert.showAndWait();
+                return;
+            }
+
+            if (!bookName.matches("[a-zA-Z0-9\\s]+")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Input Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Invalid book name.");
+                alert.showAndWait();
+                return;
+            }
+
+            try {
+                Connection con = DBUtils.establishConnection();
+
+                String bookQuery = "SELECT * FROM book WHERE book_name = ?";
+                PreparedStatement bookStmt = con.prepareStatement(bookQuery);
+                bookStmt.setString(1, bookName);
+                ResultSet bookRs = bookStmt.executeQuery();
+
+                if (!bookRs.next()) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Book Status");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Book doesn't exist.");
+                    alert.showAndWait();
+
+                    bookStmt.close();
+                    con.close();
+                    return;
+                }
+
+                String borrowedQuery = "SELECT * FROM borrowed_book WHERE book_name = ?";
+                PreparedStatement borrowedStmt = con.prepareStatement(borrowedQuery);
+                borrowedStmt.setString(1, bookName);
+                ResultSet borrowedRs = borrowedStmt.executeQuery();
+
+                if (borrowedRs.next()) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Book Status");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Book already borrowed.");
+                    alert.showAndWait();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Book Status");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Book is available.");
+                    alert.showAndWait();
+                }
+
+                bookStmt.close();
+                borrowedStmt.close();
+                con.close();
+
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
 
         });
 

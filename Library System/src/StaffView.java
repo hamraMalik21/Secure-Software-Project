@@ -51,7 +51,8 @@ public class StaffView {
         });
 
         fineBtn.setOnAction(e -> {
-            System.out.println("Fine Management");
+            ManageFinesView manageFinesView = new ManageFinesView(stage, currentUser);
+            manageFinesView.initializeComponents();
         });
 
         showBorrowedBtn.setOnAction(e -> {
