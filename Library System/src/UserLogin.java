@@ -1,11 +1,9 @@
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.mindrot.jbcrypt.BCrypt;
 
 public class UserLogin {
     private Scene loginScene;
@@ -18,20 +16,33 @@ public class UserLogin {
     }
 
     public void initializeComponents() {
-        VBox loginLayout = new VBox(10);
-        loginLayout.setPadding(new Insets(10));
-        Button loginButton = new Button("Sign In");
-        loginButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                validateLogin();
-            }
-        });
-        loginLayout.getChildren().addAll(new Label("Username:"), usernameField,
-                new Label("Password:"), passwordField,
-                loginButton);
+        VBox layout = new VBox(15);
+        layout.setPadding(new Insets(30));
+        layout.setAlignment(Pos.TOP_CENTER);
 
-        loginScene = new Scene(loginLayout, 600, 600);
+        Label title = new Label("Library Login");
+        title.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 24;");
+        layout.getChildren().add(title);
+
+        layout.getChildren().addAll(
+                new Label("Username:"), usernameField,
+                new Label("Password:"), passwordField
+        );
+
+        Button loginButton = new Button("Sign In");
+        loginButton.setPrefWidth(200);
+        loginButton.setOnAction(e -> validateLogin());
+
+        Button registerBtn = new Button("Register");
+        registerBtn.setPrefWidth(200);
+        registerBtn.setOnAction(e -> {
+            UserRegister registerView = new UserRegister(stage);
+            registerView.initializeComponents();
+        });
+
+        layout.getChildren().addAll(loginButton, registerBtn);
+
+        loginScene = new Scene(layout, 500, 400);
         stage.setTitle("User Login");
         stage.setScene(loginScene);
         stage.show();
@@ -40,21 +51,15 @@ public class UserLogin {
     private void validateLogin() {
         String username = usernameField.getText();
         String password = passwordField.getText();
-        // Authenticate the user using the authentication service module
         User loggedInUser = AuthenticationService.authenticate(username, password);
         if(loggedInUser != null){
-            // Authorization, grant the logged-in user access based on the role
             if(AuthorizationService.isStaff(loggedInUser)){
                 StaffView staffView = new StaffView(stage, loggedInUser);
-                //System.out.println(BCrypt.hashpw("customer", BCrypt.gensalt(12)));
                 staffView.initializeComponents();
-
             } else if (AuthorizationService.isUser(loggedInUser)) {
-
                 CustomerView customerView = new CustomerView(stage, loggedInUser);
                 customerView.initializeComponents();
-            }else{
-
+            } else{
                 showAlert("Authentication Failed", "Invalid username or password.");
             }
         }else{
