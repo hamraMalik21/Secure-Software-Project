@@ -7,7 +7,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
@@ -28,7 +27,6 @@ public class IssueReturnView {
         Label title = new Label("Issue/Return Books");
         title.setFont(new Font("Times New Roman",24));
 
-
         Label customerName = new Label("Enter Customer Name: ");
         Label bookName = new Label("Enter Book Name: ");
 
@@ -46,10 +44,8 @@ public class IssueReturnView {
         HBox issueReturnLayout = new HBox(issueBtn, returnBtn);
         issueReturnLayout.setSpacing(10);
 
-
         Button bookStatsBtn = new Button("View Book Status");
         bookStatsBtn.setPrefWidth(200);
-
 
         Button logoutBtn = new Button("Logout");
         logoutBtn.setPrefWidth(95);
@@ -74,20 +70,12 @@ public class IssueReturnView {
             String bookNameText = bookField.getText().trim();
 
             if (customerNameText.isEmpty() || bookNameText.isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Input Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Please fill in all fields.");
-                alert.showAndWait();
+                showAlert("Input Error", "Please fill in all fields.");
                 return;
             }
 
             if (!customerNameText.matches("[a-zA-Z0-9\\s]+") || !bookNameText.matches("[a-zA-Z0-9\\s]+")) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Input Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Invalid input.");
-                alert.showAndWait();
+                showAlert("Input Error", "Invalid input.");
                 return;
             }
 
@@ -100,11 +88,7 @@ public class IssueReturnView {
                 ResultSet bookRs = bookStmt.executeQuery();
 
                 if (!bookRs.next()) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Issue Book");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Book does not exist.");
-                    alert.showAndWait();
+                    showInfo("Issue Book", "Book does not exist.");
                     bookStmt.close();
                     con.close();
                     return;
@@ -116,11 +100,7 @@ public class IssueReturnView {
                 ResultSet customerRs = customerStmt.executeQuery();
 
                 if (!customerRs.next()) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Issue Book");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Customer does not exist.");
-                    alert.showAndWait();
+                    showInfo("Issue Book", "Customer does not exist.");
                     bookStmt.close();
                     customerStmt.close();
                     con.close();
@@ -133,11 +113,7 @@ public class IssueReturnView {
                 ResultSet borrowedRs = borrowedStmt.executeQuery();
 
                 if (borrowedRs.next()) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Issue Book");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Book is already borrowed.");
-                    alert.showAndWait();
+                    showInfo("Issue Book", "Book is already borrowed.");
                     bookStmt.close();
                     customerStmt.close();
                     borrowedStmt.close();
@@ -154,11 +130,7 @@ public class IssueReturnView {
                 int rows = insertStmt.executeUpdate();
 
                 if (rows > 0) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Issue Book");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Book issued successfully.");
-                    alert.showAndWait();
+                    showInfo("Issue Book", "Book issued successfully.");
                     customerField.clear();
                     bookField.clear();
                 }
@@ -181,28 +153,19 @@ public class IssueReturnView {
             Add logic to see if customer exists
             Add logic to see if book exists
             Add logic to check if book is in borrowed_book database and this customer borrowed this book
-            Check date, if date exceeds book rental period then -> ?
+            Check date, if date exceeds book rental period then -> automatically add fine
             If all true, remove borrowed book from borrowed_book database
-
              */
             String customerNameText = customerField.getText().trim();
             String bookNameText = bookField.getText().trim();
 
             if (customerNameText.isEmpty() || bookNameText.isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Input Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Please fill in all fields.");
-                alert.showAndWait();
+                showAlert("Input Error", "Please fill in all fields.");
                 return;
             }
 
             if (!customerNameText.matches("[a-zA-Z0-9\\s]+") || !bookNameText.matches("[a-zA-Z0-9\\s]+")) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Input Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Invalid input.");
-                alert.showAndWait();
+                showAlert("Input Error", "Invalid input.");
                 return;
             }
 
@@ -215,11 +178,7 @@ public class IssueReturnView {
                 ResultSet customerRs = customerStmt.executeQuery();
 
                 if (!customerRs.next()) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Return Book");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Customer does not exist.");
-                    alert.showAndWait();
+                    showInfo("Return Book", "Customer does not exist.");
                     customerStmt.close();
                     con.close();
                     return;
@@ -231,11 +190,7 @@ public class IssueReturnView {
                 ResultSet bookRs = bookStmt.executeQuery();
 
                 if (!bookRs.next()) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Return Book");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Book does not exist.");
-                    alert.showAndWait();
+                    showInfo("Return Book", "Book does not exist.");
                     customerStmt.close();
                     bookStmt.close();
                     con.close();
@@ -249,16 +204,28 @@ public class IssueReturnView {
                 ResultSet borrowedRs = borrowedStmt.executeQuery();
 
                 if (!borrowedRs.next()) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Return Book");
-                    alert.setHeaderText(null);
-                    alert.setContentText("This customer did not borrow this book.");
-                    alert.showAndWait();
+                    showInfo("Return Book", "This customer did not borrow this book.");
                     customerStmt.close();
                     bookStmt.close();
                     borrowedStmt.close();
                     con.close();
                     return;
+                }
+
+                java.sql.Date issueDate = borrowedRs.getDate("date");
+                java.sql.Date today = java.sql.Date.valueOf(LocalDate.now());
+                long daysBetween = (today.getTime() - issueDate.getTime()) / (1000*60*60*24);
+                int fineAmount = 0;
+
+                if(daysBetween > 60){ // 2 months
+                    fineAmount = (int)(daysBetween - 60) * 5;
+                    String fineQuery = "INSERT INTO fines (customer_name, book_name, fine_amount) VALUES (?, ?, ?)";
+                    PreparedStatement fineStmt = con.prepareStatement(fineQuery);
+                    fineStmt.setString(1, customerNameText);
+                    fineStmt.setString(2, bookNameText);
+                    fineStmt.setInt(3, fineAmount);
+                    fineStmt.executeUpdate();
+                    fineStmt.close();
                 }
 
                 String deleteQuery = "DELETE FROM borrowed_book WHERE customer_name = ? AND book_name = ?";
@@ -268,12 +235,8 @@ public class IssueReturnView {
 
                 int rows = deleteStmt.executeUpdate();
 
-                if (rows > 0) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Return Book");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Book returned successfully.");
-                    alert.showAndWait();
+                if(rows > 0){
+                    showInfo("Return Book", "Book returned successfully. Fine: " + fineAmount);
                     customerField.clear();
                     bookField.clear();
                 }
@@ -287,15 +250,12 @@ public class IssueReturnView {
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
-
-
         });
 
         bookStatsBtn.setOnAction(e -> {
             System.out.println("Update Book");
         });
 
-        // Logout --> return to UserLogin
         logoutBtn.setOnAction(e -> {
             UserLogin loginView = new UserLogin(stage);
             loginView.initializeComponents();
@@ -305,17 +265,29 @@ public class IssueReturnView {
             staffView.initializeComponents();
         });
 
-        // Layout
         VBox StaffLayout = new VBox(15);
         StaffLayout.setPadding(new Insets(10));
         StaffLayout.getChildren().addAll(title,customerName,customerField,bookName, bookField, issueReturnLayout, buttonLayout );
 
-
-        // Scene then stage
         Scene scene = new Scene(StaffLayout, 600, 600);
         stage.setTitle("Library Management System");
         stage.setScene(scene);
         stage.show();
     }
 
+    private void showAlert(String title, String content){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    private void showInfo(String title, String content){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
 }

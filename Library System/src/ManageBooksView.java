@@ -20,7 +20,6 @@ public class ManageBooksView {
         Label title = new Label("Manage Books");
         title.setFont(new Font("Times New Roman",24));
 
-
         Button addBookBtn = new Button("Add Book");
         addBookBtn.setPrefWidth(200);
 
@@ -46,18 +45,17 @@ public class ManageBooksView {
         addBookBtn.setOnAction(e -> {
             AddBook addBook = new AddBook(stage, currentUser);
             addBook.show();
-            
         });
 
         deleteBookBtn.setOnAction(e -> {
             DeleteBook deleteBook = new DeleteBook(stage, currentUser);
             deleteBook.show();
-
-
         });
 
         updateBookBtn.setOnAction(e -> {
-            UpdateBook updateBook = new UpdateBook(stage, currentUser);
+            // Minimal fix: pass a dummy Book object to match constructor
+            Book dummyBook = new Book("Sample Book", "Sample Author", "Sample Description");
+            UpdateBook updateBook = new UpdateBook(stage, currentUser, dummyBook);
             updateBook.show();
         });
 
@@ -65,7 +63,6 @@ public class ManageBooksView {
             ShowAllBooks showAllBooks = new ShowAllBooks(stage, currentUser);
             showAllBooks.initializeComponents();
         });
-
 
         // Logout --> return to UserLogin
         logoutBtn.setOnAction(e -> {
@@ -81,7 +78,6 @@ public class ManageBooksView {
         VBox StaffLayout = new VBox(15);
         StaffLayout.setPadding(new Insets(10));
         StaffLayout.getChildren().addAll(title,addBookBtn,deleteBookBtn,updateBookBtn,showBookBtn, buttonLayout);
-
 
         // Scene then stage
         Scene scene = new Scene(StaffLayout, 600, 600);
