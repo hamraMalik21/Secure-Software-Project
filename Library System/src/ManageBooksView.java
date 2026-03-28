@@ -44,12 +44,15 @@ public class ManageBooksView {
 
         // Actions *****
         addBookBtn.setOnAction(e -> {
-            System.out.println("Add Book");
+            AddBook addBook = new AddBook(stage, currentUser);
+            addBook.show();
             
         });
 
         deleteBookBtn.setOnAction(e -> {
             System.out.println("Delete Book");
+
+            //will work on this now
 
 
         });
