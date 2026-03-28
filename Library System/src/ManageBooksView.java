@@ -50,9 +50,8 @@ public class ManageBooksView {
         });
 
         deleteBookBtn.setOnAction(e -> {
-            System.out.println("Delete Book");
-
-            //will work on this now
+            DeleteBook deleteBook = new DeleteBook(stage, currentUser);
+            deleteBook.show();
 
 
         });
