@@ -23,8 +23,8 @@ public class UserRegister {
         Label title = new Label("Register New User");
         title.setFont(new Font("Times New Roman", 24));
 
-        roleBox.getItems().addAll("Customer", "Staff");
-        roleBox.setValue("Customer");
+        roleBox.getItems().addAll("user", "staff");
+        roleBox.setValue("user");
         roleBox.setPrefWidth(200);
 
         Button registerBtn = new Button("Register");
