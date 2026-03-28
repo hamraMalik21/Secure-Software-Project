@@ -57,7 +57,8 @@ public class ManageBooksView {
         });
 
         updateBookBtn.setOnAction(e -> {
-            System.out.println("Update Book");
+            UpdateBook updateBook = new UpdateBook(stage, currentUser);
+            updateBook.show();
         });
 
         showBookBtn.setOnAction(e -> {
