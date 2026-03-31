@@ -22,7 +22,7 @@ public class InputValidator {
         // example of a name with ' is my boy Conan O'Brien
         // this regex also only work for English names
         // maximum number of char is 32 and minimum is 2 (first and last)
-        String regex = "^[A-Za-z][A-Za-z '-]{0,30}[A-Za-z]$";
+        String regex = "^[A-Za-z][A-Za-z '-.]{0,30}[A-Za-z]$";
         // Compile the regex into a pattern
         Pattern pattern = Pattern.compile(regex);
         // Match against the pattern
@@ -36,7 +36,7 @@ public class InputValidator {
         // this regex starts with a latter and ends with a latter,number or ".".
         // this regex also only work for English names
         // maximum number of char is 256 and minimum is 2 (first and last)
-        String regex = "^[A-Za-z][^\\n]{1,254}[A-Za-z0-9.]$";
+        String regex = "^.{1,256}$";
         // Compile the regex into a pattern
         Pattern pattern = Pattern.compile(regex);
         // Match against the pattern

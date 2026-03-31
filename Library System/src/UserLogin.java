@@ -33,14 +33,15 @@ public class UserLogin {
         loginButton.setPrefWidth(200);
         loginButton.setOnAction(e -> validateLogin());
 
-        Button registerBtn = new Button("Register");
-        registerBtn.setPrefWidth(200);
-        registerBtn.setOnAction(e -> {
-            UserRegister registerView = new UserRegister(stage);
-            registerView.initializeComponents();
+        Button backBtn = new Button("Back");
+        backBtn.setPrefWidth(200);
+        backBtn.setOnAction(e -> {
+            MainView mainView = new MainView(stage);
+            mainView.initializeComponents();
         });
 
-        layout.getChildren().addAll(loginButton, registerBtn);
+
+        layout.getChildren().addAll(loginButton, backBtn);
 
         loginScene = new Scene(layout, 500, 400);
         stage.setTitle("User Login");

@@ -94,7 +94,7 @@ public class IssueReturnView {
                     return;
                 }
 
-                String customerQuery = "SELECT * FROM user WHERE username = ? AND role = 'user'";
+                String customerQuery = "SELECT * FROM user WHERE username = ? AND role = 'Member'";
                 PreparedStatement customerStmt = con.prepareStatement(customerQuery);
                 customerStmt.setString(1, customerNameText);
                 ResultSet customerRs = customerStmt.executeQuery();
@@ -172,7 +172,7 @@ public class IssueReturnView {
             try {
                 Connection con = DBUtils.establishConnection();
 
-                String customerQuery = "SELECT * FROM user WHERE username = ? AND role = 'user'";
+                String customerQuery = "SELECT * FROM user WHERE username = ? AND role = 'Member'";
                 PreparedStatement customerStmt = con.prepareStatement(customerQuery);
                 customerStmt.setString(1, customerNameText);
                 ResultSet customerRs = customerStmt.executeQuery();

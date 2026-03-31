@@ -90,7 +90,7 @@ public class AddBook {
                 showAlert("Error", "Book Description field is empty");
                 return;
             }else if(!InputValidator.validateBookDescription(bookDescription)){
-                showAlert("Error", "Duration Is Not Valid");
+                showAlert("Error", "Book Description Is Not Valid");
                 return;
             }
 

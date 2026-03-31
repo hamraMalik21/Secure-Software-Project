@@ -2,10 +2,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -23,11 +25,16 @@ public class ShowAllBooks {
         this.currentUser = user;
     }
 
+    public ShowAllBooks(Stage stage) {
+        this.stage = stage;
+    }
+
     public void initializeComponents() {
         stage.setTitle("Show All Books");
 
         // To display data in a table, use the JavaFX TableView
         TableView<Book> table = new TableView<>();
+        table.setFixedCellSize(200);
 
         // Define the first column of the table, <Books, Integer> means the data type
         TableColumn<Book, Integer> idColumn = new TableColumn<>("ID");
@@ -46,6 +53,25 @@ public class ShowAllBooks {
         // Book Description
         TableColumn<Book, String> bookDescription = new TableColumn<>("Book Description");
         bookDescription.setCellValueFactory(new PropertyValueFactory<>("book_description"));
+
+        //code from external source to make description text wrap around
+        bookDescription.setCellFactory(tc -> new TableCell<>() {
+            private final javafx.scene.control.Label label = new javafx.scene.control.Label();
+
+
+                {
+                    label.setWrapText(true);
+                    label.maxWidthProperty().bind(bookDescription.widthProperty());
+                    setGraphic(label);
+                }
+
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                label.setText(empty || item == null ? null : item);
+            }
+        });
 
 
 
@@ -77,6 +103,9 @@ public class ShowAllBooks {
         //the table will read data from it, and will also update upon any change
         table.setItems(BookList);
 
+
+
+
         // back button based on role, trying new thing
 
         Button backBtn = new Button("Back");
@@ -89,24 +118,21 @@ public class ShowAllBooks {
             }else if (AuthorizationService.isUser(currentUser)){
                 CustomerView customerView = new CustomerView(stage,currentUser);
                 customerView.initializeComponents();
+            }else{
+                MainView mainView = new MainView(stage);
+                mainView.initializeComponents();
             }
         });
 
-        // to logout
-        Button logoutBtn = new Button("logout");
-        logoutBtn.setPrefWidth(200);
-        logoutBtn.setOnAction(e -> {
-            UserLogin userLogin = new UserLogin(stage);
-            userLogin.initializeComponents();
-        });
 
-        HBox logoutBackBtns = new HBox(backBtn,logoutBtn);
+
+        HBox logoutBackBtns = new HBox(backBtn);
 
 
         // Create the layout (VBox that contains the table)
         VBox vbox = new VBox(table,logoutBackBtns);
         // Add the layout to the scene
-        Scene scene = new Scene(vbox, 1100, 500);
+        Scene scene = new Scene(vbox, 800, 500);
 
         //Add the scene to stage
         stage.setScene(scene);
