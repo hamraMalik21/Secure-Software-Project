@@ -9,6 +9,6 @@ public class AuthorizationService {
         if (currentUser == null) {
             return false;
         }
-        return currentUser.getRole().equalsIgnoreCase("Member");
+        return currentUser.getRole().equalsIgnoreCase("Customer");
     }
 }

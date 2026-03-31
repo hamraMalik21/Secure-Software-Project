@@ -23,8 +23,8 @@ public class UserRegister {
         Label title = new Label("Register New User");
         title.setFont(new Font("Times New Roman", 24));
 
-        roleBox.getItems().addAll("Member", "Staff");
-        roleBox.setValue("Member");
+        roleBox.getItems().addAll("Customer", "Staff");
+        roleBox.setValue("Customer");
         roleBox.setPrefWidth(200);
 
         Button registerBtn = new Button("Register");
@@ -34,8 +34,8 @@ public class UserRegister {
         Button backBtn = new Button("Back");
         backBtn.setPrefWidth(200);
         backBtn.setOnAction(e -> {
-            MainView mainView = new MainView(stage);
-            mainView.initializeComponents();
+            UserLogin loginView = new UserLogin(stage);
+            loginView.initializeComponents();
         });
 
         VBox formLayout = new VBox(15);
