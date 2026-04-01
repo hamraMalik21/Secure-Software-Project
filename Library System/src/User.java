@@ -12,6 +12,11 @@ public class User {
         this.username = username;
     }
 
+    public User(int user_id, String username) {
+        this.user_id = user_id;
+        this.username = username;
+    }
+
     public int getUser_id() {
         return user_id;
     }

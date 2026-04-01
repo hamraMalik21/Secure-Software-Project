@@ -31,6 +31,20 @@ public class InputValidator {
         return matcher.matches();
     }
 
+    static public boolean validateMemberName(String name){
+        // this regex make sure that the Director name starts and ends with a latter
+        // example of a name with ' is my boy Conan O'Brien
+        // this regex also only work for English names
+        // maximum number of char is 32 and minimum is 2 (first and last)
+        String regex = "^[A-Za-z][A-Za-z '-.]{0,30}[A-Za-z]$";
+        // Compile the regex into a pattern
+        Pattern pattern = Pattern.compile(regex);
+        // Match against the pattern
+        Matcher matcher = pattern.matcher(name);
+        // validation, return the match result
+        return matcher.matches();
+    }
+
 
     static public boolean validateBookDescription(String name){
         // this regex starts with a latter and ends with a latter,number or ".".

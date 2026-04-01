@@ -45,7 +45,7 @@ public class DeleteBook {
 /*
 
  */
-            // movie name empty or valid check
+            // book name empty or valid check
             if (bookName.isEmpty( )) {
                 showAlert("Error", "Book Name field is empty");
                 return;

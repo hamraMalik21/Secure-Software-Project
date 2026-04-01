@@ -25,6 +25,9 @@ public class StaffView {
         Button manageBooksBtn = new Button("Manage Books");
         manageBooksBtn.setPrefWidth(200);
 
+        Button manageMembersBtn = new Button("Manage Members");
+        manageMembersBtn.setPrefWidth(200);
+
         Button issueReturnBtn = new Button("Issue/Return Books");
         issueReturnBtn.setPrefWidth(200);
 
@@ -34,6 +37,8 @@ public class StaffView {
         Button showBorrowedBtn = new Button("Show All Borrowed Books");
         showBorrowedBtn.setPrefWidth(200);
 
+
+
         Button logoutBtn = new Button("Logout");
         logoutBtn.setPrefWidth(200);
 
@@ -41,6 +46,11 @@ public class StaffView {
         manageBooksBtn.setOnAction(e -> {
             ManageBooksView manageBooksView = new ManageBooksView(stage, currentUser);
             manageBooksView.initializeComponents();
+        });
+
+        manageMembersBtn.setOnAction(e -> {
+            ManageMembersView manageMembersView = new ManageMembersView(stage, currentUser);
+            manageMembersView.initializeComponents();
         });
 
         issueReturnBtn.setOnAction(e -> {
@@ -69,7 +79,7 @@ public class StaffView {
         // Layout
         VBox StaffLayout = new VBox(15);
         StaffLayout.setPadding(new Insets(10));
-        StaffLayout.getChildren().addAll(title,manageBooksBtn,issueReturnBtn,fineBtn,showBorrowedBtn, logoutBtn);
+        StaffLayout.getChildren().addAll(title,manageBooksBtn,manageMembersBtn, issueReturnBtn,fineBtn,showBorrowedBtn, logoutBtn);
 
         // Scene then stage
         Scene scene = new Scene(StaffLayout, 600, 600);

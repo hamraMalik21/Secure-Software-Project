@@ -100,8 +100,8 @@ public class ShowBorrowedBooks {
 
         backBtn.setOnAction(e -> {
             if (AuthorizationService.isStaff(currentUser)){
-                ManageBooksView manageBooksView = new ManageBooksView(stage,currentUser);
-                manageBooksView.initializeComponents();
+                StaffView staffView = new StaffView(stage,currentUser);
+                staffView.initializeComponents();
             }else if (AuthorizationService.isUser(currentUser)){
                 CustomerView customerView = new CustomerView(stage,currentUser);
                 customerView.initializeComponents();
