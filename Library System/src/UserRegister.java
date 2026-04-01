@@ -25,6 +25,8 @@ public class UserRegister {
 
         roleBox.getItems().addAll("Customer", "Staff");
         roleBox.setValue("Customer");
+        roleBox.getItems().addAll("Member", "Staff");
+        roleBox.setValue("Member");
         roleBox.setPrefWidth(200);
 
         Button registerBtn = new Button("Register");
@@ -36,6 +38,8 @@ public class UserRegister {
         backBtn.setOnAction(e -> {
             UserLogin loginView = new UserLogin(stage);
             loginView.initializeComponents();
+            MainView mainView = new MainView(stage);
+            mainView.initializeComponents();
         });
 
         VBox formLayout = new VBox(15);

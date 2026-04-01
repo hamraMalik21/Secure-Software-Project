@@ -10,5 +10,6 @@ public class AuthorizationService {
             return false;
         }
         return currentUser.getRole().equalsIgnoreCase("Customer");
+        return currentUser.getRole().equalsIgnoreCase("Member");
     }
 }
