@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class DeleteMember {
     private User currentUser;
@@ -58,13 +59,14 @@ public class DeleteMember {
                     try {
                         con = DBUtils.establishConnection();
 
-                        String sql = "SELECT * FROM borrowed_book WHERE username = ? ";
+                        String sql = "SELECT * FROM borrowed_book WHERE customer_name = ? ";
                         stmt = con.prepareStatement(sql);
                         stmt.setString(1, memberName);
 
-                        stmt.executeUpdate();
 
-                        if (sql != null) {
+                        ResultSet rs = stmt.executeQuery();
+
+                        if (rs.next()) {
                             showAlert("Error", "Cannot remove member they have borrowed a book");
                         } else {
 
@@ -98,8 +100,6 @@ public class DeleteMember {
                         System.out.println("Insert error:" + ex.getMessage());
                     }
 
-                //i want to add the below logic inside an if statement, the if statement will first check if the member has a book borrowed or not, if he doesnt
-                //then the delete will happen, if he has a book then in the else block i'll mention something like Cannot remove member they have borrowed a book
 
 
 
@@ -109,18 +109,18 @@ public class DeleteMember {
                     manageBooksView.initializeComponents();
                 });
 
-            // Layout
-            VBox addBookLayout = new VBox(15);
-            addBookLayout.setPadding(new Insets(10));
-            addBookLayout.getChildren().addAll(title,bookNameH,delBackH);
 
-            // Scene then stage
-            Scene scene = new Scene(addBookLayout, 730, 600);
-            stage.setTitle("Library Management System");
-            stage.setScene(scene);
-            stage.show();
     });
+        // Layout
+        VBox addBookLayout = new VBox(15);
+        addBookLayout.setPadding(new Insets(10));
+        addBookLayout.getChildren().addAll(title,bookNameH,delBackH);
 
+        // Scene then stage
+        Scene scene = new Scene(addBookLayout, 730, 600);
+        stage.setTitle("Library Management System");
+        stage.setScene(scene);
+        stage.show();
     }
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
